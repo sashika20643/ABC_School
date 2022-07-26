@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Subjectcontroller;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use Illuminate\Support\Facades\DB;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,26 +15,84 @@ use App\Http\Controllers\Subjectcontroller;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+
+
+//Admin routes
 Route::prefix('admin')->middleware('auth','isAdmin')->group(function(){
-    Route::get('/home', function () {
+
+
+    //home route
+    Route::get('/', function () {
         return view('Admin.index');
     });
+
+    //create subject view
     Route::get('/subject/create', function () {
         return view('Admin.AddSubject');
     });
-    Route::get('/subject', function () {
-        $data=App\Models\subject::all();
-        return view('Admin.Subjects')->with('subjects',$data);
-    });
-    Route::get('/subject/view/{$id}', function () {
-        $data=App\Models\subject::where('id',$id)->get();
 
-        return view('Admin.subjectView')->with('subject',$data);
-    });
 
-    Route::post('controller/subject/create',[Subjectcontroller::class, 'addSubject']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+//add subjects to database
+Route::post('controller/subject/create',[AdminController::class, 'addSubject']);
+
+//add child subjects to database
+Route::post('controller/child_subject/add',[AdminController::class, 'addChildSubject']);
+//subject view
+Route::get('/subject/view/{id}',[AdminController::class, 'subjectView']);
+//delete subject
+Route::get('controller/subject/delete/{id}',[AdminController::class, 'subjectDelete']);
+//delete child subs
+Route::get('controller/childsubject/delete/{id}',[AdminController::class, 'childSubjectDelete']);
+//profile view
+Route::get('/profile/view/{id}',[AdminController::class, 'profileView']);
+//useers
+Route::get('/users',[AdminController::class, 'Users']);
+Route::get('/subject',[AdminController::class, 'Subjects']);
+Route::get('controller/subject/edit/{id}',[AdminController::class, 'editSubject']);
+Route::post('controller/subject/update',[AdminController::class, 'updateSubject']);
 
 });
+
+
+//users routes
+
+Route::prefix('user')->middleware('auth')->group(function(){
+
+
+
+
+
+//enroll for subject
+    Route::get('/subject/enroll/{id}',[UserController::class, 'enroll']);
+  //remove subject
+    Route::get('/subject/denroll/{id}',[UserController::class, 'denroll']);
+    //index
+    Route::get('/',[UserController::class, 'Index']);
+    //all subjects
+    Route::get('/subject',[UserController::class, 'Subjects']);
+//subject view
+    Route::get('/subject/view/{id}',[UserController::class, 'SubjectView']);
+
+
+}
+
+);
+//home page
 Route::get('/', function () {
     return view('welcome');
 });

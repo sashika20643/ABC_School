@@ -33,7 +33,7 @@
 
         @if(session()->get('alert')==="exist")
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-          Product exist!!
+          This subject exist!!
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('subjects', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->unique();
             $table->string('name');
             $table->string('descreption');
             $table->timestamps();

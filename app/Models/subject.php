@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class subject extends Model
 {
+    public $incrementing = false;
+
     use HasFactory;
 }
