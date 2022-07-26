@@ -119,10 +119,14 @@ public function editSubject($id){
 }
 
 public function updateSubject(Request $request){
-    $subject=subject::where('id',$request->id);
-    $subject->name=$request->name;
-    $subject->descreption=$request->descreption;
-    $subject->save();
+    $subject=subject::where('id',$request->id) ->limit(1)->update([
+        'name'=>$request->name,
+        'descreption'=>$request->descreption,
+
+    ]
+    );
+
+
     return redirect('admin/subject');
 }
 
